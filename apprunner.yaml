@@ -1,0 +1,23 @@
+version: 1.0
+runtime: python3
+build:
+  commands:
+    build:
+      - echo "Installing dependencies..."
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      - echo "Build completed successfully"
+run:
+  runtime-version: 3.11
+  command: streamlit run app.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true --server.enableCORS=false --server.enableXsrfProtection=false
+  network:
+    port: 8080
+  env:
+    - name: PORT
+      value: "8080"
+    - name: USE_S3
+      value: "true"
+    - name: AWS_REGION
+      value: "us-east-1"
+    - name: ADMIN_PASSWORD
+      value: "change-this-password" 
