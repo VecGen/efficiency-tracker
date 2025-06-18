@@ -196,21 +196,29 @@ App Runner automatically scales based on traffic:
 
 ### Common Issues
 
-1. **S3 Permission Errors**
+1. **WebSocket Connection Failed**
+   ```
+   WebSocket connection to 'wss://your-app.awsapprunner.com/_stcore/stream' failed
+   ```
+   - **Solution**: This is handled automatically by the included `.streamlit/config.toml` configuration
+   - The configuration disables WebSocket compression and other features that don't work well with App Runner
+   - If you still see this error, it won't affect app functionality - Streamlit will fall back to HTTP polling
+
+2. **S3 Permission Errors**
    ```
    Error: Access Denied
    ```
    - Check IAM role permissions
    - Verify bucket name and region
 
-2. **Port Configuration Issues**
+3. **Port Configuration Issues**
    ```
    Error: Connection refused
    ```
    - Ensure PORT environment variable is set to 8080
-   - Check Streamlit configuration in Dockerfile
+   - Check apprunner.yaml configuration
 
-3. **Memory Issues**
+4. **Memory Issues**
    ```
    Error: Container killed due to memory
    ```

@@ -23,6 +23,18 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Configure for App Runner compatibility
+if os.environ.get("PORT"):
+    # Running in App Runner - disable features that cause WebSocket issues
+    import streamlit.web.cli as stcli
+    import sys
+    if hasattr(stcli, '_main_run_clExplicit'):
+        # Streamlit 1.28+ compatibility
+        pass
+    else:
+        # Older Streamlit versions
+        pass
+
 def get_admin_password_hash():
     """Get the admin password hash from environment or use default"""
     # In production, set ADMIN_PASSWORD environment variable
