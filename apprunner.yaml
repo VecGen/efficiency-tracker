@@ -3,11 +3,13 @@ runtime: python311
 build:
   commands:
     build:
+      - pip3 install --upgrade pip
       - pip3 install -r requirements.txt
+      - echo "Build completed successfully"
 
 run:
   runtime-version: 3.11
-  command: streamlit run app.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true --server.enableWebsocketCompression=false --server.enableCORS=false --server.enableXsrfProtection=false --server.allowRunOnSave=false --server.runOnSave=false --server.fileWatcherType=none
+  command: python -m streamlit run app.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true --server.enableWebsocketCompression=false --server.enableCORS=false --server.enableXsrfProtection=false --server.allowRunOnSave=false --server.runOnSave=false --server.fileWatcherType=none
   network:
     port: 8080
   env:
