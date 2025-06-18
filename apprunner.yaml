@@ -1,5 +1,5 @@
 version: 1.0
-runtime: python3
+runtime: python311
 build:
   commands:
     build:
@@ -10,7 +10,7 @@ build:
 
 run:
   runtime-version: 3.11
-  command: python3 -m streamlit run app.py --server.port=8080 --server.headless=true
+  command: streamlit run app.py --server.port=8080 --server.headless=true
   network:
     port: 8080
   env:
