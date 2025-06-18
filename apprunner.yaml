@@ -1,15 +1,16 @@
 version: 1.0
-runtime: python311
+runtime: python3
 build:
   commands:
     build:
-      - pip3 install --upgrade pip
-      - pip3 install -r requirements.txt
+      - echo "Starting build process..."
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
       - echo "Build completed successfully"
 
 run:
   runtime-version: 3.11
-  command: python -m streamlit run app.py --server.port=8080 --server.address=0.0.0.0 --server.headless=true --server.enableWebsocketCompression=false --server.enableCORS=false --server.enableXsrfProtection=false --server.allowRunOnSave=false --server.runOnSave=false --server.fileWatcherType=none
+  command: python3 -m streamlit run app.py --server.port=8080 --server.headless=true
   network:
     port: 8080
   env:
@@ -20,12 +21,4 @@ run:
     - name: AWS_REGION
       value: "us-east-1"
     - name: ADMIN_PASSWORD
-      value: "change-this-password"
-    - name: STREAMLIT_SERVER_HEADLESS
-      value: "true"
-    - name: STREAMLIT_SERVER_ENABLE_CORS
-      value: "false"
-    - name: STREAMLIT_SERVER_ENABLE_XSRF_PROTECTION
-      value: "false"
-    - name: STREAMLIT_SERVER_ENABLE_WEBSOCKET_COMPRESSION
-      value: "false" 
+      value: "change-this-password" 
