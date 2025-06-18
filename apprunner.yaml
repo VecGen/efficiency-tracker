@@ -6,11 +6,12 @@ build:
       - echo "Starting build process..."
       - pip3 install --upgrade pip
       - pip3 install -r requirements.txt
+      - pip3 install streamlit==1.28.1
       - echo "Build completed successfully"
 
 run:
   runtime-version: 3.11
-  command: streamlit run app.py --server.port=8080 --server.headless=true
+  command: python -m streamlit run app.py --server.port=8080 --server.headless=true
   network:
     port: 8080
   env:
