@@ -50,12 +50,12 @@ def verify_admin_password(input_password):
 def parse_engineer_link():
     """Parse URL parameters to extract engineer and team info"""
     try:
-        # Get URL parameters
-        params = st.query_params
+        # Get URL parameters - using older Streamlit API
+        params = st.experimental_get_query_params()
         
         if "dev" in params and "team" in params:
-            developer_name = params["dev"]
-            team_name = params["team"]
+            developer_name = params["dev"][0]  # params values are lists
+            team_name = params["team"][0]
             
             # Verify this is a valid engineer-team combination
             teams_config_manager = get_teams_config_manager()
@@ -98,12 +98,6 @@ def render_admin_login():
                 st.rerun()
             else:
                 st.error("❌ Invalid password. Please try again.")
-    
-    # Development hint
-    if os.environ.get("ADMIN_PASSWORD"):
-        st.info("💡 Using custom admin password from environment variable")
-    else:
-        st.info("💡 Development mode: Default password is 'admin123'")
 
 def main():
     """Main application entry point"""
@@ -163,14 +157,14 @@ def main():
         st.sidebar.markdown("---")
         if st.sidebar.button("🔧 Admin Access"):
             # Clear URL parameters and redirect to admin
-            st.query_params.clear()
+            st.experimental_set_query_params()
             st.rerun()
         
         # Render engineer interface
         engineer_interface = EngineerInterface(engineer_name, team_name)
         engineer_interface.render()
         
-    elif st.query_params.get("admin") == "true" or st.session_state.admin_authenticated:
+    elif st.experimental_get_query_params().get("admin", [None])[0] == "true" or st.session_state.admin_authenticated:
         # Admin access
         if not st.session_state.admin_authenticated:
             render_admin_login()
@@ -187,7 +181,7 @@ def main():
             st.sidebar.markdown("### 🎛️ Admin Actions")
             if st.sidebar.button("🔓 Logout"):
                 st.session_state.admin_authenticated = False
-                st.query_params.clear()
+                st.experimental_set_query_params()
                 st.rerun()
             
             # If no teams configured, show setup message
@@ -216,7 +210,7 @@ def main():
             
             # Admin access button
             if st.button("🔧 Admin Access", use_container_width=True, type="primary"):
-                st.query_params["admin"] = "true"
+                st.experimental_set_query_params(admin="true")
                 st.rerun()
             
             st.markdown("---")
@@ -252,8 +246,7 @@ def main():
                         
                         if selected_developer != "Select your name":
                             # Redirect to engineer interface with URL parameters
-                            st.query_params["dev"] = selected_developer
-                            st.query_params["team"] = selected_team
+                            st.experimental_set_query_params(dev=selected_developer, team=selected_team)
                             st.rerun()
                     else:
                         st.warning("No developers configured for this team. Please contact your admin.")
